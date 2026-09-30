@@ -5,17 +5,18 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { parseArgs } from "node:util";
 
-const source = fileURLToPath(new URL("../skills/vibedesign/", import.meta.url));
+const skillName = "gms-vibedesign";
+const source = fileURLToPath(new URL(`../skills/${skillName}/`, import.meta.url));
 const { version } = JSON.parse(readFileSync(new URL("../package.json", import.meta.url), "utf8"));
-const help = `VibeDesign ${version} — Codex Skill 安装器
+const help = `gmskills ${version} — Codex Skill 安装器
 
-  vibedesign install [--global | --project]
-  vibedesign status  [--global | --project]
-  vibedesign --version
+  gmskills install gms-vibedesign [--global | --project]
+  gmskills status  gms-vibedesign [--global | --project]
+  gmskills --version
 
-默认安装到 ~/.agents/skills/vibedesign，供当前用户的各项目使用。
---project 仅安装到当前目录的 .agents/skills/vibedesign。
-识别旧版 ~/.codex/skills/vibedesign；更新前备份，不覆盖符号链接。
+默认安装到 ~/.agents/skills/gms-vibedesign，供当前用户的各项目使用。
+--project 仅安装到当前目录的 .agents/skills/gms-vibedesign。
+识别 ~/.codex/skills/gms-vibedesign；更新前备份，不覆盖符号链接。
 无需模型 API Key；Skill 由当前智能体执行，配色校验需要 Python 3。`;
 
 function entry(path) {
@@ -41,9 +42,9 @@ function matches(target, bundled) {
 }
 
 function destination(home, cwd, project) {
-  const current = join(project ? cwd : home, ".agents", "skills", "vibedesign");
+  const current = join(project ? cwd : home, ".agents", "skills", skillName);
   if (project) return current;
-  const legacy = join(home, ".codex", "skills", "vibedesign");
+  const legacy = join(home, ".codex", "skills", skillName);
   if (!entry(legacy)) return current;
   if (!entry(current)) return legacy;
   if (realpathSync(current) === realpathSync(legacy)) return current;
@@ -59,21 +60,21 @@ function install(target) {
 
   const base = dirname(dirname(target));
   mkdirSync(base, { recursive: true });
-  const staging = mkdtempSync(join(base, ".vibedesign-stage-"));
+  const staging = mkdtempSync(join(base, `.${skillName}-stage-`));
   let backup;
   let moved = false;
   try {
-    cpSync(source, join(staging, "vibedesign"), { recursive: true, force: false, errorOnExist: true });
+    cpSync(source, join(staging, skillName), { recursive: true, force: false, errorOnExist: true });
     mkdirSync(dirname(target), { recursive: true });
     if (existing) {
-      const backupRoot = join(base, "vibedesign-backups");
+      const backupRoot = join(base, `${skillName}-backups`);
       mkdirSync(backupRoot, { recursive: true });
       const stamp = new Date().toISOString().replaceAll(":", "-");
-      backup = join(mkdtempSync(join(backupRoot, `${stamp}-`)), "vibedesign");
+      backup = join(mkdtempSync(join(backupRoot, `${stamp}-`)), skillName);
       renameSync(target, backup);
       moved = true;
     }
-    renameSync(join(staging, "vibedesign"), target);
+    renameSync(join(staging, skillName), target);
   } catch (error) {
     if (moved) {
       try {
@@ -102,9 +103,9 @@ export function run(args, { home = homedir(), cwd = process.cwd(), log = console
   if (values.help) { log(help); return 0; }
   if (values.version) { log(version); return 0; }
   if (positionals.length === 0) { log(help); return 0; }
-  const [command] = positionals;
-  if (positionals.length !== 1 || !["install", "status"].includes(command)) {
-    throw new Error("请使用 install、status 或 --help。");
+  const [command, requestedSkill] = positionals;
+  if (positionals.length !== 2 || !["install", "status"].includes(command) || requestedSkill !== skillName) {
+    throw new Error(`请使用 install ${skillName}、status ${skillName} 或 --help。`);
   }
   const bundled = files(source);
   if (!bundled.includes("SKILL.md")) throw new Error("安装包缺少 SKILL.md，请重新获取安装包。");
@@ -120,7 +121,7 @@ export function run(args, { home = homedir(), cwd = process.cwd(), log = console
   const backup = install(target);
   log(`已安装 VibeDesign ${version}：${target}`);
   if (backup) log(`原文件备份：${backup}`);
-  log("在 Codex 中调用 $vibedesign；若未显示，请重启 Codex。无需额外模型 API Key，配色校验需要 Python 3。");
+  log("在 Codex 中调用 $gms-vibedesign；若未显示，请重启 Codex。无需额外模型 API Key，配色校验需要 Python 3。");
   return 0;
 }
 

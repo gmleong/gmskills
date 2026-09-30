@@ -1,0 +1,7 @@
+html { scroll-behavior: smooth; }
+body { margin: 0; }
+button, input, select { font: inherit; }
+button { padding: 0; border: 0; background: transparent; }
+a { color: inherit; }
+h1, h2, h3, h4, p { margin: 0; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }

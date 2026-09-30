@@ -1,0 +1,27 @@
+# Terra Workshop · VibeDesign
+暖纸色与陶土红的设计交付工作台。以大留白、清晰字阶和连贯的编辑路径呈现设计令牌。
+目标用户：用智能体生成并交付前端页面的独立开发者
+
+## 必须执行的设计约束
+- background: #F8F6F0
+- foreground: #302D28
+- primary: #96472F
+- primaryForeground: #FCFAF5
+- secondary: #EAE4D8
+- muted: #F0EBE1
+- mutedForeground: #696154
+- border: #D9D1C3
+- accent: #716344
+- 使用 bg-background、text-foreground、bg-primary、text-primary-foreground、bg-muted、text-muted-foreground、border-border；禁止任意品牌色替代令牌。
+- 主字体："Avenir Next", "PingFang SC", system-ui, sans-serif；等宽字体："SFMono-Regular", Consolas, monospace。
+- 基础字号：16px；字阶比例：1.25；尺寸序列：12.8px / 16px / 20px / 25px / 31.25px / 39.06px / 48.83px。
+- 容器使用 p-container，即 32px；基础圆角 rounded-lg，即 12px；衍生圆角不得为负。
+- 卡片使用 shadow-card (0 6px 24px rgb(48 45 40 / 0.04))，浮层使用 shadow-popover (0 16px 48px rgb(48 45 40 / 0.12))。
+- 为表单关联 label，图标按钮提供名称，保留键盘焦点。按业务提供加载、空、错误和禁用状态；禁止用空处理函数冒充完成。
+- 保留目标工程现有业务逻辑、扫描路径和插件，仅合并需要的主题配置。以上实际令牌优先于下方自然语言说明。
+
+## 场景设计规则
+桌面按导航、编辑画布、属性面板组织信息，窄屏按编辑画布、属性面板排列。正文 16px，辅助文字 12.8px，字阶依次 12.8 / 16 / 20 / 25 / 31.25 / 39.06 / 48.83px。主容器留白与基础圆角跟随 spacing 中的当前令牌。所有颜色引用九个语义令牌，使用 primary/primaryForeground 呈现主操作。色彩变更即时映射到预览并计算七组对比度；无效规范禁用导出并说明原因。所有输入有可见标签、键盘焦点与错误提示。编辑态只存在当前页面，切换对照版本保留状态，离开前通过导出保存。不要添加虚构的营收、服务在线状态或模型实时生成动画。
+
+## 编辑器执行指令
+请严格使用上述色彩变量和圆角规范，立刻更新或生成目标 React/Tailwind 代码；在用户授权的目标文件范围内实施，并完成适用的类型、构建与交互检查。

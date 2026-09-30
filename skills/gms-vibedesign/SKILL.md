@@ -1,5 +1,5 @@
 ---
-name: vibedesign
+name: gms-vibedesign
 description: 将产品调性转成可执行的设计系统，或将业务代码、数据库 Schema、API 数据结合设计系统生成 React 页面。当用户调用 VibeDesign、要求生成设计令牌与 AI 编码约束，或要求按业务结构推导页面时使用。
 ---
 

@@ -1,17 +1,17 @@
 {
-  "name": "vibedesign",
-  "version": "0.1.0",
-  "description": "Agent-native design-system skill for Codex. Generate design tokens and working UI without an additional model API key.",
+  "name": "gmskills",
+  "version": "0.2.0",
+  "description": "GM open-source agent skills, starting with gms-vibedesign for design systems and working UI.",
   "license": "MIT",
   "author": "gmleong",
   "type": "module",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/gmleong/vibedesign-skill.git"
+    "url": "git+https://github.com/gmleong/gmskills.git"
   },
-  "homepage": "https://github.com/gmleong/vibedesign-skill#readme",
+  "homepage": "https://github.com/gmleong/gmskills#readme",
   "bugs": {
-    "url": "https://github.com/gmleong/vibedesign-skill/issues"
+    "url": "https://github.com/gmleong/gmskills/issues"
   },
   "keywords": [
     "codex",
@@ -24,18 +24,18 @@
     "node": ">=22.18.0"
   },
   "bin": {
-    "vibedesign": "bin/vibedesign.mjs"
+    "gmskills": "bin/gmskills.mjs"
   },
   "files": [
-    "bin/vibedesign.mjs",
-    "skills/vibedesign/SKILL.md",
-    "skills/vibedesign/agents/openai.yaml",
-    "skills/vibedesign/references/design-contract.md",
-    "skills/vibedesign/scripts/check_contrast.py"
+    "bin/gmskills.mjs",
+    "skills/gms-vibedesign/SKILL.md",
+    "skills/gms-vibedesign/agents/openai.yaml",
+    "skills/gms-vibedesign/references/design-contract.md",
+    "skills/gms-vibedesign/scripts/check_contrast.py"
   ],
   "scripts": {
     "test": "node --test tests/*.mjs",
-    "test:contrast": "python3 skills/vibedesign/scripts/check_contrast.py --self-test"
+    "test:contrast": "python3 skills/gms-vibedesign/scripts/check_contrast.py --self-test"
   },
   "publishConfig": {
     "access": "public",

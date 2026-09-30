@@ -1,4 +1,4 @@
 interface:
   display_name: "VibeDesign"
   short_description: "由智能体直接将产品调性与业务代码转为设计规范和可运行页面"
-  default_prompt: "使用 $vibedesign，根据我的产品调性与业务代码生成设计系统，并按现有项目结构实现页面。"
+  default_prompt: "使用 $gms-vibedesign，根据我的产品调性与业务代码生成设计系统，并按现有项目结构实现页面。"
