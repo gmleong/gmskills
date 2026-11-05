@@ -1,12 +1,23 @@
 # gmskills
 
-GM 的开源 Skill 集合。每个 Skill 使用 `gms-` 前缀；当前提供 `gms-vibedesign`。
+GM 的开源 Skill 集合。每个 Skill 使用 `gms-` 前缀。
+
+- **`gms-vibedesign`**：从产品需求和业务代码生成设计系统与页面。
+- **[`gms-img2svg`](skills/gms-img2svg/README.md)**：在本机将图像转换为可编辑 SVG。
 
 **给 AI 编程工作流加上设计规范。** 将产品调性和业务代码转成设计令牌、编码约束与可运行页面。
 
 An agent-native design skill for Codex: turn product intent and business code into design tokens and working UI, using the model already running in your agent. No additional model API key or hosted service is required.
 
-## 安装
+## 安装 gms-img2svg
+
+```sh
+npx --yes github:gmleong/gmskills#main install gms-img2svg
+```
+
+安装器需要 Node.js 22.18+。执行图像转换还需 Python 和 Cairo；见 [gms-img2svg 安装与使用](skills/gms-img2svg/README.md)。
+
+## 安装 gms-vibedesign
 
 需要 Node.js 22.18+；执行配色校验需要 Python 3。基础 Skill 本身无需启动网站、MCP 服务或安装前端项目依赖。
 
@@ -97,7 +108,7 @@ python3 skills/gms-vibedesign/scripts/check_contrast.py /path/to/design-system.j
 
 这仅验证指定颜色配对，不代表整页通过 WCAG，也不证明页面美观。布局与审美质量取决于输入、宿主模型和实际审查；使用时应检查生成页面的交互、可访问性和工程构建结果。
 
-当前安装器面向 Codex，已在 macOS 验证；其他编辑器和 Windows 尚未实测。仓库提供基础 Skill、安装器及测试，独立于 VibeDesign 官网和模型 API 服务。
+当前安装器面向 Codex，已在 macOS 验证；其他编辑器和 Windows 尚未实测。VibeDesign Skill 独立于官网和模型 API 服务。
 
 ## 开发与贡献
 
@@ -112,4 +123,4 @@ npm run test:contrast
 
 ## License
 
-[MIT](LICENSE) · Copyright (c) 2026 gmleong
+[MIT](LICENSE) · Copyright (c) 2026 gmleong。随附的 VTracer 运行时保留各自的 [许可证和声明](skills/gms-img2svg/scripts/vendor/)。

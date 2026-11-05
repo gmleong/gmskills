@@ -1,7 +1,7 @@
 {
   "name": "gmskills",
   "version": "0.2.0",
-  "description": "GM open-source agent skills, starting with gms-vibedesign for design systems and working UI.",
+  "description": "GM open-source agent skills for UI design and image-to-SVG reconstruction.",
   "license": "MIT",
   "author": "gmleong",
   "type": "module",
@@ -31,7 +31,8 @@
     "skills/gms-vibedesign/SKILL.md",
     "skills/gms-vibedesign/agents/openai.yaml",
     "skills/gms-vibedesign/references/design-contract.md",
-    "skills/gms-vibedesign/scripts/check_contrast.py"
+    "skills/gms-vibedesign/scripts/check_contrast.py",
+    "skills/gms-img2svg/"
   ],
   "scripts": {
     "test": "node --test tests/*.mjs",

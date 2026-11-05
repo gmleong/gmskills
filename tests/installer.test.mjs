@@ -88,3 +88,15 @@ test("安装器校验命令参数，帮助和版本不写文件", () => {
     assert.throws(() => run(args, options));
   }
 });
+
+test("安装 img2svg 时包含运行时，与 VibeDesign 的安装位置独立", (t) => {
+  const cwd = mkdtempSync(join(tmpdir(), "gms-img2svg-installer-"));
+  t.after(() => rmSync(cwd, { recursive: true, force: true }));
+  const options = { cwd, log: () => {} };
+  const target = join(cwd, ".agents", "skills", "gms-img2svg");
+  assert.equal(run(["install", "gms-img2svg", "--project"], options), 0);
+  assert.equal(run(["status", "gms-img2svg", "--project"], options), 0);
+  assert.equal(run(["status", "gms-vibedesign", "--project"], options), 1);
+  assert.match(readFileSync(join(target, "SKILL.md"), "utf8"), /^name: gms-img2svg$/m);
+  assert.equal(readFileSync(join(target, "scripts", "vendor", "vtracer_v1", "pkg", "vtracer_wasm_bg.wasm")).subarray(0, 4).toString("hex"), "0061736d");
+});

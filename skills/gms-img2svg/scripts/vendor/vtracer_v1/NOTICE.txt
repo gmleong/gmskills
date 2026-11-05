@@ -1,0 +1,7 @@
+Bundled dependency: @visioncortex/vtracer 1.0.0-alpha.4
+Source: https://github.com/visioncortex/vtracer
+Package: https://www.npmjs.com/package/@visioncortex/vtracer
+License: MIT OR Apache-2.0
+
+The JavaScript and WebAssembly files in this directory are the unmodified files
+published in the official npm package.

@@ -5,19 +5,19 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { parseArgs } from "node:util";
 
-const skillName = "gms-vibedesign";
-const source = fileURLToPath(new URL(`../skills/${skillName}/`, import.meta.url));
+const skills = ["gms-vibedesign", "gms-img2svg"];
 const { version } = JSON.parse(readFileSync(new URL("../package.json", import.meta.url), "utf8"));
 const help = `gmskills ${version} — Codex Skill 安装器
 
-  gmskills install gms-vibedesign [--global | --project]
-  gmskills status  gms-vibedesign [--global | --project]
+  gmskills install <skill> [--global | --project]
+  gmskills status  <skill> [--global | --project]
   gmskills --version
 
-默认安装到 ~/.agents/skills/gms-vibedesign，供当前用户的各项目使用。
---project 仅安装到当前目录的 .agents/skills/gms-vibedesign。
-识别 ~/.codex/skills/gms-vibedesign；更新前备份，不覆盖符号链接。
-无需模型 API Key；Skill 由当前智能体执行，配色校验需要 Python 3。`;
+可安装：${skills.join("、")}。
+默认安装到 ~/.agents/skills/<skill>，供当前用户的各项目使用。
+--project 仅安装到当前目录的 .agents/skills/<skill>。
+识别 ~/.codex/skills/<skill>；更新前备份，不覆盖符号链接。
+Skill 的运行依赖见仓库 README。`;
 
 function entry(path) {
   try { return lstatSync(path); }
@@ -33,7 +33,7 @@ function files(directory, prefix = "") {
   }).sort();
 }
 
-function matches(target, bundled) {
+function matches(target, bundled, source) {
   try {
     const installed = files(target);
     return JSON.stringify(installed) === JSON.stringify(bundled)
@@ -41,7 +41,7 @@ function matches(target, bundled) {
   } catch { return false; }
 }
 
-function destination(home, cwd, project) {
+function destination(home, cwd, project, skillName) {
   const current = join(project ? cwd : home, ".agents", "skills", skillName);
   if (project) return current;
   const legacy = join(home, ".codex", "skills", skillName);
@@ -51,7 +51,7 @@ function destination(home, cwd, project) {
   throw new Error(`发现两份用户级 Skill，请先保留需要的一份：\n${current}\n${legacy}`);
 }
 
-function install(target) {
+function install(target, source, skillName) {
   const existing = entry(target);
   if (existing?.isSymbolicLink()) {
     throw new Error(`已有符号链接，未修改：${target}\n请更新链接指向的源目录，或自行迁移后重试。`);
@@ -103,29 +103,30 @@ export function run(args, { home = homedir(), cwd = process.cwd(), log = console
   if (values.help) { log(help); return 0; }
   if (values.version) { log(version); return 0; }
   if (positionals.length === 0) { log(help); return 0; }
-  const [command, requestedSkill] = positionals;
-  if (positionals.length !== 2 || !["install", "status"].includes(command) || requestedSkill !== skillName) {
-    throw new Error(`请使用 install ${skillName}、status ${skillName} 或 --help。`);
+  const [command, skillName] = positionals;
+  if (positionals.length !== 2 || !["install", "status"].includes(command) || !skills.includes(skillName)) {
+    throw new Error(`请选择 ${skills.join("、")}，或使用 --help。`);
   }
+  const source = fileURLToPath(new URL(`../skills/${skillName}/`, import.meta.url));
   const bundled = files(source);
   if (!bundled.includes("SKILL.md")) throw new Error("安装包缺少 SKILL.md，请重新获取安装包。");
-  const target = destination(home, cwd, values.project);
-  if (entry(target) && matches(target, bundled)) {
-    log(`已安装，与 VibeDesign ${version} 内容一致：${target}`);
+  const target = destination(home, cwd, values.project, skillName);
+  if (entry(target) && matches(target, bundled, source)) {
+    log(`已安装，与 ${skillName} ${version} 内容一致：${target}`);
     return 0;
   }
   if (command === "status") {
     log(`${entry(target) ? "已存在，但与当前安装包内容不同" : "尚未安装"}：${target}`);
     return 1;
   }
-  const backup = install(target);
-  log(`已安装 VibeDesign ${version}：${target}`);
+  const backup = install(target, source, skillName);
+  log(`已安装 ${skillName} ${version}：${target}`);
   if (backup) log(`原文件备份：${backup}`);
-  log("在 Codex 中调用 $gms-vibedesign；若未显示，请重启 Codex。无需额外模型 API Key，配色校验需要 Python 3。");
+  log(`在 Codex 中调用 $${skillName}；若未显示，请重启 Codex。`);
   return 0;
 }
 
 if (process.argv[1] && realpathSync(process.argv[1]) === fileURLToPath(import.meta.url)) {
   try { process.exitCode = run(process.argv.slice(2)); }
-  catch (error) { console.error(`VibeDesign: ${error.message}`); process.exitCode = 1; }
+  catch (error) { console.error(`gmskills: ${error.message}`); process.exitCode = 1; }
 }

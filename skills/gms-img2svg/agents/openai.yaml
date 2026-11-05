@@ -1,0 +1,4 @@
+interface:
+  display_name: "Img2SVG"
+  short_description: "识别图形结构，用原生形状、贝塞尔与渐变重建可编辑 SVG，并逐对象验证"
+  default_prompt: "Use $gms-img2svg to inspect my image, build a reviewed vector plan, and deliver an editable SVG with named objects, gradients, live text, and visual verification."
