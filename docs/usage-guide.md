@@ -1,4 +1,6 @@
-# VibeDesign 使用教程
+# gms-vibedesign 使用教程
+
+[返回技能目录](../README.md)
 
 VibeDesign 是交给 Codex 执行的 Skill。它指导当前智能体读取项目、生成设计规范与实现页面。需要已有的 Codex 模型访问权限；Skill 本身不需要另一个模型 API Key。
 
@@ -18,6 +20,8 @@ npx --yes github:gmleong/gmskills#v0.2.0 install gms-vibedesign --project
 ```
 
 默认用户级目录是 `~/.agents/skills/gms-vibedesign`，项目级目录是当前目录的 `.agents/skills/gms-vibedesign`。安装器也会识别 `~/.codex/skills/gms-vibedesign`：内容一致时直接复用；普通目录更新前完整备份，已有符号链接不会覆盖。安装后如果 Codex 尚未识别 `$gms-vibedesign`，重启 Codex。
+
+也可以克隆仓库，在根目录运行 `node bin/gmskills.mjs install gms-vibedesign`。安装包从 GitHub 获取；本项目未发布到 npm registry。
 
 ## 2. 让智能体读取真实输入
 
@@ -61,6 +65,12 @@ python3 skills/gms-vibedesign/scripts/check_contrast.py examples/terra-workshop/
 
 [Terra Workshop](../examples/terra-workshop/) 用本产品自己的 `types/design-system.ts`、`utils/aesthetic-eval.ts` 和 `utils/design-artifacts.ts` 作为输入，生成了可编辑、可预览、可导出的设计工作台。该目录包含完整 Next.js 页面、样式、初始令牌、Tailwind 配置、Cursor Rules 和对照截图。
 
+| 常规布局 | VibeDesign 设计版 |
+| --- | --- |
+| ![常规布局](../examples/terra-workshop/images/baseline.png) | ![暖色设计版](../examples/terra-workshop/images/designed.png) |
+
+另见[移动端截图](../examples/terra-workshop/images/mobile.png)。
+
 ```sh
 git clone https://github.com/gmleong/gmskills.git
 cd gmskills/examples/terra-workshop
@@ -71,3 +81,14 @@ npm run dev
 浏览器打开 `http://127.0.0.1:3001`。先切换“常规布局 / VibeDesign”，再编辑主题名称、颜色、字体、圆角与留白。切换不会丢失当前修改；预览、配色检查和导出文件使用同一份编辑状态。将主色改成过浅的颜色，可以看到对比度失败和导出禁用。测试完停止开发服务，再运行 `npm run build` 检查生产构建。
 
 案例是本项目内部制作的示例，由同一智能体实现两套布局；它不是独立模型对照测试，也不能代表其他业务场景必然取得相同的审美结果。
+
+## 5. 开发与贡献
+
+在仓库根目录运行安装器和配色检查，无需先安装 npm 依赖：
+
+```sh
+npm test
+npm run test:contrast
+```
+
+安装器面向 Codex，已在 macOS 验证。提交 Issue 时，请提供可复现的输入和预期结果，并移除业务秘密和个人数据。
